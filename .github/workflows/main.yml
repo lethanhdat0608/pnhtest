@@ -1,0 +1,71 @@
+name: Main Push Workflow
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      service-1:
+        description: 'Run deployment for service-1'
+        required: false
+        default: false
+        type: boolean
+      service-2:
+        description: 'Run deployment for service-2'
+        required: false
+        default: false
+        type: boolean
+      service-3:
+        description: 'Run deployment for service-3'
+        required: false
+        default: false
+        type: boolean
+      all:
+        description: 'Run deployment for all services'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  check-branch:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Check branch
+          if: github.ref != 'refs/heads/main'
+          run: |
+            echo "This workflow can only run on the 'main' branch, but current branch is ${{ github.ref }}."
+            exit 1
+
+  deploy-service-1:
+    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.service-1 == true || inputs.all == true) }}
+    runs-on: ubuntu-latest
+    needs: check-branch
+    environment: prod
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Custom Deploy for service-1
+        run: echo "Custom deployment logic for service-1..."
+
+  deploy-service-2:
+    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.service-2 == true || inputs.all == true) }}
+    runs-on: ubuntu-latest
+    needs: check-branch
+    environment: prod
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Custom Deploy for service-2
+        run: echo "Custom deployment logic for service-2..."
+
+  deploy-service-3:
+    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.service-3 == true || inputs.all == true) }}
+    runs-on: ubuntu-latest
+    needs: check-branch
+    environment: prod
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Custom Deploy for service-3
+        run: echo "Custom deployment logic for service-3..."
