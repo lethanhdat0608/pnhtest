@@ -41,6 +41,12 @@ jobs:
           build-args: |
             VERSION=${{ github.sha }}
 
+  scan-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
       - name: Scan image for vulnerabilities
         uses: aquasecurity/trivy-action@master
         with:
