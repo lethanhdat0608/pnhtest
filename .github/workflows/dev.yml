@@ -11,7 +11,7 @@ env:
   IMAGE_TAG: latest
 
 jobs:
-  build and deploy to GKE:
+  build-and-deploy-to-GKE:
     runs-on: ubuntu-latest
 
     steps:
